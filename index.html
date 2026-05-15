@@ -14,7 +14,7 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>GENA3D: Generative Amodal 3D Modeling by Bridging 2D Priors and 3D Coherence</title>
+    <title>Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet' type='text/css'>
@@ -23,10 +23,10 @@
     <link rel="icon" href="./sources/1_icon.png">
 
 
-    <meta property="og:site_name" content="GENA3D />
+    <meta property="og:site_name" content="Perceive-then-Plan />
     <meta property="og:type" content="video.other" />
-    <meta property="og:title" content="GENA3D: Generative Amodal 3D Modeling by Bridging 2D Priors and 3D Coherence" />
-    <meta property="og:description" content="GENA3D: Generative Amodal 3D Modeling by Bridging 2D Priors and 3D Coherence, 2025" />
+    <meta property="og:title" content="Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation" />
+    <meta property="og:description" content="Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation, 2025" />
     <meta property="og:url" content="" />
 
     <script src="assets/js/video_comparison.js"></script>
@@ -97,7 +97,7 @@
 
     <div class="highlight-clean" style="padding-bottom: 10px;">
         <div class="container" style="max-width: 1000px; margin-bottom: 40px;">
-            <h1 class="text-center " style="color: #a30b4d;"><b>GENA3D: Generative Amodal 3D Modeling by Bridging 2D Priors and 3D Coherence</b></h1>
+            <h1 class="text-center " style="color: #df6bf07a;"><b>Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation</b></h1>
         </div>
         <!-- <div class="container" style="max-width: 1400px; margin-bottom: 30px;">
             <h1 class="text-center"><b> ICLR 2025
@@ -120,13 +120,13 @@
                 </div>
             </div>
             <div class="buttons" style="margin-top: 8px; margin-bottom: 8px;">
-                <a class="red-glass-btn" href="https://arxiv.org/abs/2511.21945">
+                <a class="red-glass-btn" href="https://arxiv.org/abs/todo">
                     <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
                         <path fill="currentColor" d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z"></path>
                     </svg> 
                     Paper
                 </a>
-                <a class="red-glass-btn" href="https://github.com/Colezwhy/GENAmodal3D">
+                <a class="red-glass-btn" href="https://github.com/Colezwhy/Perceive-then-Plan">
                     <svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 
                                 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 
@@ -169,7 +169,7 @@
             <div class="col-md-12">
                 <h2>Abstract</h2>
                 <p>
-                    Generating complete 3D objects under partial occlusions (i.e., amodal scenarios) is a practically important yet challenging problem, as large portions of object geometry are unobserved in real-world scenarios. Existing approaches either operate directly in 3D, which ensures geometric consistency but often lacks generative expressiveness, or rely on 2D amodal completion, which provides strong appearance priors but does not guarantee reliable 3D structure. This raises a key question: how can we achieve both generative plausibility and geometric coherence in amodal 3D modeling? To answer this question, we introduce GENA3D (GENarative Amodal 3D), a framework that integrates learned 2D generative priors with explicit 3D geometric reasoning within a conditional 3D generation paradigm. The 2D priors enable the model to plausibly infer diverse occluded content, while the 3D representation enforces multi-view consistency and spatial validity. Our design incorporates a novel View-Wise Cross-Attention for multi-view alignment and a Stereo-Conditioned Cross-Attention to anchor generative predictions in 3D relationships. By combining generative imagination with structural constraints, GENA3D generates complete and coherent 3D objects from limited observations without sacrificing geometric fidelity. Experiments demonstrate that our method outperforms existing approaches in both synthetic and real-world amodal scenarios, highlighting the effectiveness of bridging 2D priors and 3D coherence in generating plausible and geometrically consistent 3D structures in complex environments.
+                    Building structured 3D scene layouts from a single image requires reconciling visual observations with physical and spatial constraints, a challenge that is difficult to address with direct prediction alone. In this work, we formulate monocular 3D layout estimation as a perceive-then-plan problem with vision-language models, where a <b>Perceiver</b> first grounds the 3D objects and then a <b>Planner</b> iteratively refines the scene hypothesis through actions that improve physical plausibility while preserving consistency with the input image. We propose <b>Layout-as-Policy (LaP)</b>, which casts the planning stage as a policy learning problem: 3D layouts are represented as structured states, and refined via discrete actions such as translation, rotation, and rescaling. Starting from an observation-aligned initialization with the geometry-enhanced Perceiver, the <i>LaP Planner</i> is trained to produce action sequences that progressively resolve geometric inconsistencies and enforce realistic spatial relations. To enable effective learning, we combine supervised sequence initialization with preference-based optimization, allowing the model to learn corrective behaviors without requiring explicit reward engineering. This formulation transforms layout estimation from a one-shot prediction task into an iterative refinement process, enabling better handling of global constraints and complex object interactions. Experiments demonstrate that our approach produces layouts that are more physically coherent and better aligned with visual observations, while naturally supporting downstream tasks such as scene editing and manipulation.
                 </p>
             </div>
         </div>
@@ -181,11 +181,11 @@
         <div class="row">
             <div class="col-md-12">
                 <h2>Proposed Framework & Method </h2>
-                <p> Overview of GENA3D. Given sparse images, visibility masks, and occlusion masks indicating the occluded object, GENA3D first generates a sparse structure by aggregating multi-view information and infers the complete geometric structure from the partial stereo point cloud. Once the sparse structure is obtained, we employ a pretrained amodal SLAT Transformer, controlling texture generation with visibility masks and occlusion masks and then decode into an occlusion-free 3D object with high-quality geometry and appearance.</p>
+                <p> Overview of our <i>perceive-then-plan</i> framework. The Perceiver grounds 3D boxes from the input image. A canonicalized, grid-based representation is then iteratively refined by the <b>LaP Planner</b>, which treats each layout as a structured state and selects discrete actions (translate, rotate, rescale) via a learned policy until convergence. The final layout supports both scene assembly (digital twin) and camera-space projection (3D grounding).</p>
                 <div class="container" style="max-width: 1200px;">
                     <div class="row">
                         <div class="col-md-12">
-                        <img src="sources/pipeline_overall.png" alt="architecture" style="width: 100%">
+                        <img src="sources/pipeline.png" alt="architecture" style="width: 100%">
                         </div>
                     </div>
                 </div>
@@ -197,7 +197,8 @@
     <div class="container" style="max-width: 1200px;">
         <div class="row">
             <div class="col-md-12">
-                <p> A detailed illustration of our proposed View-Wise Cross Attention and Stereo-Conditioned Cross Attention. Specifically, we aggregate sparse-view information and fuse them in a view-wise manner and then infer the unobserved geometry structure with observed partial stereo as condition, preserving the geometric consistency and plausibility.</p>
+                <h2>  Action Space & Perturbed Data Synthesis</h2>
+                <p> We illustrate our designed action space and perturbed data synthesis process, which provides a strong starting point for our Layout-as-Policy core design.</p>
                 <div class="container" style="max-width: 1200px;">
                     <div class="row">
                         <div class="col-md-12">
@@ -215,17 +216,88 @@
     <div class="container" style="max-width: 1200px;">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Qualitative Results</h2>
+                <h2>Results</h2>
             </div>
             <p>
-                Amodal 3D object generation results on Google Scanned Object (GSO) dataset.
+                Perceiver results, shown both reprojection and layout in the 3D space.
             </p>
             <div class="container" style="max-width: 1200px;">
                 <div class="row">
                     <div class="col-md-12">
-                    <img src="sources/qual_gso.png" alt="architecture" style="width: 100%">
+                    <img src="sources/app_perceiver.png" alt="architecture" style="width: 100%">
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1200px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Planner Refinement Process</h2>
+                <p>We visualize the iterative refinement process of the LaP Planner on real-world scenes. For each example, the video shows the step-by-step action sequence applied to the initial Perceiver layout, and the image shows the final refined 3D scene layout projected back into the image space.</p>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 40px; align-items: center;">
+            <div class="col-md-6">
+                <div class="video-compare-container" style="width: 100%">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="videos/example1.mp4" type="video/mp4"></source>
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="videos/example1.png" alt="Example 1 final layout" style="width: 100%">
+            </div>
+            <div class="col-12 text-center" style="margin-top: 10px;">
+                <h4 class="caption">Example 1: The planner progressively resolves object overlaps and adjusts orientations to produce a physically coherent indoor scene layout.</h4>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 40px; align-items: center;">
+            <div class="col-md-6">
+                <div class="video-compare-container" style="width: 100%">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="videos/example2.mp4" type="video/mp4"></source>
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="videos/example2.png" alt="Example 2 final layout" style="width: 100%">
+            </div>
+            <div class="col-12 text-center" style="margin-top: 10px;">
+                <h4 class="caption">Example 2: Starting from an observation-aligned initialization, discrete translate, rotate, and rescale actions refine the layout to satisfy spatial constraints.</h4>
+            </div>
+        </div>
+
+        <div class="row" style="margin-bottom: 40px; align-items: center;">
+            <div class="col-md-6">
+                <div class="video-compare-container" style="width: 100%">
+                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
+                        <source data-src="videos/example3.mp4" type="video/mp4"></source>
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="videos/example3.png" alt="Example 3 final layout" style="width: 100%">
+            </div>
+            <div class="col-12 text-center" style="margin-top: 10px;">
+                <h4 class="caption">Example 3: The planner handles complex multi-object scenes by iteratively correcting geometric inconsistencies across successive refinement steps.</h4>
+            </div>
+        </div>
+    </div>
+
+    <hr class="divider" />
+    <div class="container" style="max-width: 1200px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>More Qualitative Results</h2>
+                <p>Additional qualitative visualizations of 3D scene layouts estimated by our Perceive-then-Plan framework across diverse indoor scenes, demonstrating both 2D reprojection accuracy and 3D spatial coherence.</p>
+            </div>
+            <div class="col-md-12" style="margin-top: 10px;">
+                <img src="sources/more_vis.png" alt="More qualitative results" style="width: 100%">
             </div>
         </div>
     </div>
@@ -349,14 +421,14 @@
             <div class="col-sm-12">
                 <h2>BibTeX</h2>
                 <pre><code>
-                    @misc{zhou2026gena3dgenerativeamodal3d,
-                        title={GENA3D: Generative Amodal 3D Modeling by Bridging 2D Priors and 3D Coherence}, 
+                    @misc{zhou2026perceivethenplan,
+                        title={Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation}, 
                         author={Junwei Zhou and Yu-Wing Tai},
                         year={2026},
-                        eprint={2511.21945},
+                        eprint={todo},
                         archivePrefix={arXiv},
                         primaryClass={cs.CV},
-                        url={https://arxiv.org/abs/2511.21945}, 
+                        url={https://arxiv.org/abs/todo}, 
                   }
                   </code></pre>
             </div>

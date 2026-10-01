@@ -1,448 +1,637 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XB3PR2Y1TQ"></script>
-    <script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XB3PR2Y1TQ"></script>
+  <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-XB3PR2Y1TQ');
-    </script>
+  </script>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,600' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="assets/css/Highlight-Clean.css">
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="icon" href="./sources/icon.png">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation</title>
+  <meta name="description" content="Perceive-then-Plan: a geometry-enhanced Perceiver VLM grounds objects in 3D from a single image, then the LaP Planner VLM refines the layout through discrete actions (select, move, rotate, resize) learned with SFT and DPO.">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="canonical" href="https://colezwhy.github.io/perceivethenplan/">
 
+  <meta property="og:site_name" content="Perceive-then-Plan">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation">
+  <meta property="og:description" content="A Perceiver VLM grounds the scene in 3D; the LaP Planner refines it with discrete actions until the layout is physically plausible and still matches the image.">
+  <meta property="og:url" content="https://colezwhy.github.io/perceivethenplan/">
+  <meta property="og:image" content="https://colezwhy.github.io/perceivethenplan/static/img/og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Perceive-then-Plan: Layout-as-Policy">
+  <meta name="twitter:image" content="https://colezwhy.github.io/perceivethenplan/static/img/og.jpg">
 
-    <meta property="og:site_name" content="Perceive-then-Plan />
-    <meta property="og:type" content="video.other" />
-    <meta property="og:title" content="Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation" />
-    <meta property="og:description" content="Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation, 2025" />
-    <meta property="og:url" content="" />
+  <link rel="icon" type="image/png" href="static/img/favicon.png">
+  <link rel="apple-touch-icon" href="static/img/apple-touch-icon.png">
 
-    <script src="assets/js/video_comparison.js"></script>
-    <script type="module" src="https://unpkg.com/@google/model-viewer@2.0.1/dist/model-viewer.min.js"></script>
-
-    <style>
-        body, p, h1, h2, h3, h4, h5, h6, span, a, div {
-            font-family: "Times New Roman", Times, serif !important;
-        }
-    </style>
-
-
-    <style>
-        .image-container {
-          display: flex;
-          justify-content: space-between;
-        }
-        .image-container img {
-          width: 70%; /* 每张图片宽度设置为50% */
-        }
-      </style>
-
-    <style>
-        p {
-            font-size: 18px;
-        }
-    </style>
-
-<style>
-    .red-glass-btn {
-        font-size: 28px;
-        padding: 12px 28px;
-        border-radius: 18px;
-    
-        background: rgba(255, 80, 80, 0.25);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 80, 80, 0.4);
-    
-        color: rgb(178, 26, 26);
-        font-weight: 500;
-    
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-    
-        transition: 0.25s ease;
-    }
-    
-    .red-glass-btn:hover {
-        background: rgba(255, 80, 80, 0.35);
-        border-color: rgba(255, 80, 80, 0.6);
-        transform: translateY(-2px);
-    }
-    
-    .red-glass-btn svg {
-        width: 24px;
-        height: 24px;
-        fill: currentColor;
-    }
-    </style>
-    
-
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+  <link rel="stylesheet" href="static/css/style.css">
 </head>
 
-
 <body>
+<a class="skip-link" href="#overview">Skip to content</a>
 
-    <div class="highlight-clean" style="padding-bottom: 10px;">
-        <div class="container" style="max-width: 1000px; margin-bottom: 40px;">
-            <h1 class="text-center " style="color: #5d0092;"><b>Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation</b></h1>
-        </div>
-        <!-- <div class="container" style="max-width: 1400px; margin-bottom: 30px;">
-            <h1 class="text-center"><b> ICLR 2025
-        </div> -->
-
-        <div class="container" style="max-width: 1000px; margin-bottom: 30px;">
-            <div class="row authors">
-                <div class="col">
-                    <!-- <h5 class="text-center" style="text-align: center">Authors anonymized</h5> -->
-                    <div class="text-center">
-                            <span class="author-block" style="font-size: 35px;  margin-right: 35px;">
-                            <a href="https://colezwhy.github.io/" style="color: rgb(0, 0, 0);">Junwei Zhou</a></span>
-                            <span class="author-block" style="font-size: 35px;  margin-right: 35px;">
-                            <a href="https://yuwingtai.github.io/" style="color: rgb(0, 0, 0);"> Yu-Wing Tai </a></span>
-                    </div>
-
-                      <div class="text-center">
-                        <span class="author-block" style="font-size: 28px; margin-right: 30px; color: rgb(32, 134, 73);">Dartmouth College</span>
-                      </div>
-                </div>
-            </div>
-            <div class="buttons" style="margin-top: 8px; margin-bottom: 8px;">
-                <a class="red-glass-btn" href="https://arxiv.org/abs/2605.25326">
-                    <svg style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M16 0H8C6.9 0 6 .9 6 2V18C6 19.1 6.9 20 8 20H20C21.1 20 22 19.1 22 18V6L16 0M20 18H8V2H15V7H20V18M4 4V22H20V24H4C2.9 24 2 23.1 2 22V4H4M10 10V12H18V10H10M10 14V16H15V14H10Z"></path>
-                    </svg> 
-                    Paper
-                </a>
-                <a class="red-glass-btn" href="https://github.com/Colezwhy/Perceive-then-Plan">
-                    <svg xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;margin-left:-12px;margin-right:12px" viewBox="0 0 24 24">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 
-                                1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 
-                                3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 
-                                2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
-                    </svg>
-                    Code
-                </a>
-            </div>
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="brand" href="#top" aria-label="Perceive-then-Plan, back to top">
+      <img src="static/img/favicon.png" alt="" width="28" height="28">
+      <span>Perceive&#8209;then&#8209;Plan</span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#overview">Overview</a>
+      <a href="#method">Method</a>
+      <a href="#policy">Layout-as-Policy</a>
+      <a href="#refinement">Refinement</a>
+      <a href="#results">Results</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#applications">Applications</a>
+      <a href="#bibtex">BibTeX</a>
+    </nav>
+    <div class="topbar-cta">
+      <a class="btn btn--sm btn--ghost" href="https://arxiv.org/abs/2605.25326" aria-label="Paper on arXiv">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        <span>Paper</span>
+      </a>
+      <a class="btn btn--sm btn--ghost" href="https://github.com/Colezwhy/Perceive-then-Plan" aria-label="Code on GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+        <span>Code</span>
+      </a>
     </div>
+  </div>
+  <div class="progress" aria-hidden="true"></div>
+</header>
 
-    <hr class="divider" />
-    <div class="container" style="max-width: 1000px;">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="container" style="max-width: 1000px;">
-                    <div class="row">
-                        <div class="col-md-12">
-                        <img src="sources/teaser.png" alt="architecture" style="max-width: 648px; width: 100%; display: block; margin: 0 auto;">
-                        </div>
+<main id="top">
 
-                        <div class="col-12">
-                            <h2> What do we do? </h2>
-                            <div class="video-compare-container" style="width: 100%">
-                                <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                                    <source data-src="videos/demonstration.mp4" type="video/mp4"></source>
-                                </video>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- ═════════════ HERO ═════════════ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow"><b>arXiv 2605.25326</b><span>cs.CV</span><span>May 2026</span></p>
+        <h1 class="title">
+          <span class="t-line t-perceive">Perceive</span>
+          <span class="t-line"><span class="t-then">&#8209;then&#8209;</span><span class="t-plan">Plan</span></span>
+        </h1>
+        <p class="subtitle"><em>Layout-as-Policy</em> for Monocular 3D Scene Layout Estimation</p>
+        <ul class="authors">
+          <li><a href="https://colezwhy.github.io/">Junwei Zhou</a></li>
+          <li><a href="https://yuwingtai.github.io/">Yu-Wing Tai</a></li>
+        </ul>
+        <p class="affil">Dartmouth College</p>
+        <div class="cta">
+          <a class="btn btn--primary" href="https://arxiv.org/abs/2605.25326">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+            arXiv
+          </a>
+          <a class="btn" href="https://arxiv.org/pdf/2605.25326">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14"/></svg>
+            PDF
+          </a>
+          <a class="btn" href="https://github.com/Colezwhy/Perceive-then-Plan">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>
+            Code
+          </a>
+          <a class="btn" href="#bibtex">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H6a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v-2M18 4h-2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h2v-2M6 12v3a5 5 0 0 1-2 4M16 12v3a5 5 0 0 1-2 4"/></svg>
+            BibTeX
+          </a>
         </div>
+      </div>
+
+      <figure class="viewport" aria-label="LaP Planner refinement examples">
+        <div class="vp-frame">
+          <video id="vp-video" muted loop playsinline preload="metadata"
+                 poster="static/video/example1_poster.jpg" src="static/video/example1.mp4"
+                 aria-label="Step-by-step refinement of a 3D layout by the LaP Planner"></video>
+          <span class="vp-tag vp-tag--tl" id="vp-state"><i></i>LaP Planner · refining</span>
+          <span class="vp-tag vp-tag--tr" id="vp-count">Scene 1 / 3</span>
+          <figure class="vp-inset">
+            <img id="vp-photo" src="static/img/example1_input.webp" alt="Input photo of a bedroom" width="730" height="530">
+            <span class="vp-tag">Input image</span>
+          </figure>
+          <div class="vp-objs" id="vp-objs" aria-hidden="true"></div>
+        </div>
+        <div class="vp-controls">
+          <div class="seg" role="group" aria-label="Choose example scene" id="vp-seg">
+            <button type="button" aria-pressed="true" data-i="0">Bedroom</button>
+            <button type="button" aria-pressed="false" data-i="1">Office desk</button>
+            <button type="button" aria-pressed="false" data-i="2">Bed &amp; nightstands</button>
+          </div>
+          <button type="button" class="iconbtn" id="vp-play" aria-label="Pause video" aria-pressed="true">
+            <svg class="i-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+            <svg class="i-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" hidden><path d="M7 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L8.5 4.64A1 1 0 0 0 7 5.5z"/></svg>
+          </button>
+        </div>
+        <figcaption class="vp-caption">Iterative refinement by the LaP Planner on real-world scenes. Each video steps through the action sequence applied to the Perceiver's initial layout. <b>Inset:</b> the single input image.</figcaption>
+      </figure>
     </div>
+  </section>
 
-    <hr class="divider" />
-
-    <div class="container" style="max-width: 1000px;">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Abstract</h2>
-                <p>
-                    Building structured 3D scene layouts from a single image requires reconciling visual observations with physical and spatial constraints, a challenge that is difficult to address with direct prediction alone. In this work, we formulate monocular 3D layout estimation as a perceive-then-plan problem with vision-language models, where a <b>Perceiver</b> first grounds the 3D objects and then a <b>Planner</b> iteratively refines the scene hypothesis through actions that improve physical plausibility while preserving consistency with the input image. We propose <b>Layout-as-Policy (LaP)</b>, which casts the planning stage as a policy learning problem: 3D layouts are represented as structured states, and refined via discrete actions such as translation, rotation, and rescaling. Starting from an observation-aligned initialization with the geometry-enhanced Perceiver, the <i>LaP Planner</i> is trained to produce action sequences that progressively resolve geometric inconsistencies and enforce realistic spatial relations. To enable effective learning, we combine supervised sequence initialization with preference-based optimization, allowing the model to learn corrective behaviors without requiring explicit reward engineering. This formulation transforms layout estimation from a one-shot prediction task into an iterative refinement process, enabling better handling of global constraints and complex object interactions. Experiments demonstrate that our approach produces layouts that are more physically coherent and better aligned with visual observations, while naturally supporting downstream tasks such as scene editing and manipulation.
-                </p>
-            </div>
-        </div>
+  <!-- ═════════════ HEADLINE NUMBERS ═════════════ -->
+  <section class="headline" aria-label="Key results">
+    <div class="wrap headline-inner">
+      <p class="tldr"><span class="k">TL;DR</span>Two VLMs in one loop. A geometry-enhanced <strong>Perceiver</strong> grounds every object in 3D, then the <strong>LaP Planner</strong> repairs the layout by emitting discrete edit actions, round after round.</p>
+      <div class="stat stat--perc">
+        <span class="stat-v">0.64</span>
+        <span class="stat-l">Prec@IoU 0.5 for 3D grounding</span>
+        <span class="stat-d">Perceiver 8B. Next best: <b>0.46</b> (Qwen3-VL 8B, plain SFT)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-v">&minus;60<small>%</small></span>
+        <span class="stat-l">Collisions per scene</span>
+        <span class="stat-d"><b>3.62 &rarr; 1.44</b> once the LaP Planner 8B converges</span>
+      </div>
+      <div class="stat">
+        <span class="stat-v">&minus;65<small>%</small></span>
+        <span class="stat-l">Support violations</span>
+        <span class="stat-d">Floating or unsupported objects, <b>11.63% &rarr; 4.12%</b></span>
+      </div>
+      <div class="stat">
+        <span class="stat-v">+0.13</span>
+        <span class="stat-l">Reprojection IoU</span>
+        <span class="stat-d"><b>0.54 &rarr; 0.67</b>. The fixes stay faithful to the image</span>
+      </div>
     </div>
-    
+  </section>
 
-    <hr class="divider" />
-    <div class="container" style="max-width: 1000px;">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Proposed Framework & Method </h2>
-                <p> Overview of our <i>perceive-then-plan</i> framework. The Perceiver grounds 3D boxes from the input image. A canonicalized, grid-based representation is then iteratively refined by the <b>LaP Planner</b>, which treats each layout as a structured state and selects discrete actions (translate, rotate, rescale) via a learned policy until convergence. The final layout supports both scene assembly (digital twin) and camera-space projection (3D grounding).</p>
-                <div class="container" style="max-width: 1000px;">
-                    <div class="row">
-                        <div class="col-md-12">
-                        <img src="sources/pipeline.png" alt="architecture" style="width: 100%">
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- ═════════════ OVERVIEW ═════════════ -->
+  <section class="section" id="overview">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">Abstract<span>Figure 1</span></p>
+        <div>
+          <h2 class="sec-title">Layout estimation as a sequence of decisions</h2>
+          <p class="sec-lead">One-shot regressors predict every box at once, so a single mistake can break support and contact for the whole room. We perceive first, then plan corrections.</p>
         </div>
+      </div>
+      <div class="overview-grid">
+        <figure class="plate">
+          <button class="plate-img" type="button" data-zoom="static/img/teaser.webp" aria-label="Enlarge Figure 1">
+            <img src="static/img/teaser.webp" alt="The Perceiver grounds all instances in 3D from the image and 2D boxes; the LaP Planner then refines the canonical layout with steps such as SELECT obj 1, MOVE [1,0,0], STOP." width="1083" height="598" loading="lazy">
+            <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+          </button>
+          <figcaption><span class="fig-no">Fig. 1</span>The <span class="hl-p">Perceiver</span> grounds every instance in 3D. The <span class="hl-l">LaP Planner</span> then refines the scene with action sequences, following the Layout-as-Policy design.</figcaption>
+        </figure>
+        <div class="prose abstract">
+          <p>Building structured 3D scene layouts from a single image requires reconciling visual observations with physical and spatial constraints, a challenge that is difficult to address with direct prediction alone. In this work, we formulate monocular 3D layout estimation as a perceive-then-plan problem with vision-language models, where a <span class="hl-p">Perceiver</span> first grounds the 3D objects and then a <span class="hl-l">Planner</span> iteratively refines the scene hypothesis through actions that improve physical plausibility while preserving consistency with the input image.</p>
+          <p>We propose <strong>Layout-as-Policy (LaP)</strong>, which casts the planning stage as a policy learning problem: 3D layouts are represented as structured states, and refined via discrete actions such as translation, rotation, and rescaling. Starting from an observation-aligned initialization with the geometry-enhanced Perceiver, the <em>LaP Planner</em> is trained to produce action sequences that progressively resolve geometric inconsistencies and enforce realistic spatial relations. To enable effective learning, we combine supervised sequence initialization with preference-based optimization, allowing the model to learn corrective behaviors without requiring explicit reward engineering.</p>
+          <p>This formulation transforms layout estimation from a one-shot prediction task into an iterative refinement process, enabling better handling of global constraints and complex object interactions. Experiments demonstrate that our approach produces layouts that are more physically coherent and better aligned with visual observations, while naturally supporting downstream tasks such as scene editing and manipulation.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <hr class="divider" />
-    <div class="container" style="max-width: 1000px;">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>  Action Space & Perturbed Data Synthesis</h2>
-                <p> We illustrate our designed action space and perturbed data synthesis process, which provides a strong starting point for our Layout-as-Policy core design.</p>
-                <div class="container" style="max-width: 1000px;">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <!-- <img src="sources/pipeline_proposed.png" alt="architecture" style="width: 60%; display: block; margin: 0 auto;"> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- ═════════════ METHOD ═════════════ -->
+  <section class="section" id="method">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">§3 Method<span>Figure 2</span></p>
+        <div>
+          <h2 class="sec-title">Two VLMs, one closed loop</h2>
+          <p class="sec-lead">The Perceiver supplies a visually grounded starting point. The LaP Planner corrects its physical and relational errors. Pick a stage to see what it does.</p>
         </div>
+      </div>
+
+      <div class="stages" role="tablist" aria-label="Pipeline stages">
+        <button class="stage-tab" role="tab" id="tab-perceive" aria-controls="panel-perceive" aria-selected="true" data-stage="perceive" data-x="0" data-w="40.3">
+          <span class="st-k">Stage 1 · Perceive</span>
+          <span class="st-t">Perceiver VLM</span>
+          <span class="st-s">Image + 2D detections in, 3D boxes out, then snapped to a canonical grid.</span>
+        </button>
+        <button class="stage-tab" role="tab" id="tab-plan" aria-controls="panel-plan" aria-selected="false" tabindex="-1" data-stage="plan" data-x="40.3" data-w="41.5">
+          <span class="st-k">Stage 2 · Plan</span>
+          <span class="st-t">LaP Planner</span>
+          <span class="st-s">Reads the scene state as text and emits actions until it outputs only STOP.</span>
+        </button>
+        <button class="stage-tab" role="tab" id="tab-assemble" aria-controls="panel-assemble" aria-selected="false" tabindex="-1" data-stage="assemble" data-x="81.8" data-w="18.2">
+          <span class="st-k">Output · Assemble</span>
+          <span class="st-t">Scene assembly</span>
+          <span class="st-s">Contact graph + gravity settling turn boxes into a usable 3D scene.</span>
+        </button>
+      </div>
+
+      <figure class="plate pipeline">
+        <div class="plate-img" style="cursor:default">
+          <div style="position:relative">
+            <img src="static/img/pipeline.webp" alt="Pipeline: Perceive stage with a 2D detector, a frozen geometry encoder and the Perceiver VLM; Plan stage where the LaP Planner with LoRA reads the scene state, the 2D detections and an instruction, outputs an action sequence that the Action Executer applies; Formatting output with scene assembly and aligned 3D grounding." width="1731" height="722" loading="lazy">
+            <div class="pipe-mask" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="pipe-focus" aria-hidden="true"></div>
+          </div>
+          <button class="zoom" type="button" data-zoom="static/img/pipeline.webp" aria-label="Enlarge Figure 2" style="opacity:1;border:0;cursor:zoom-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></button>
+        </div>
+        <figcaption><span class="fig-no">Fig. 2</span>The Perceiver grounds 3D boxes from the input image. A canonicalized, grid-based representation is then iteratively refined by the LaP Planner, which treats each layout as a structured state and selects discrete actions until convergence. The final layout supports both scene assembly (digital twin) and camera-space projection (3D grounding).</figcaption>
+      </figure>
+
+      <div class="stage-detail" role="tabpanel" id="panel-perceive" aria-labelledby="tab-perceive">
+        <div class="kcard">
+          <h4>Local-axis box representation</h4>
+          <p>Regressing eight box vertices needs strong format priors that do not suit a VLM's training objective. Each box is instead a center, a size, and its two bottom axes; the vertical axis follows from a cross product.</p>
+          <code class="eq">ax_y = ax_x × ax_z
+Box = {(x, y, z, w, h, l, ax_x, ax_z, cls)}</code>
+          <span class="tag">Without it: Reproj. IoU <b>0.54</b> &rarr; 0.41</span>
+        </div>
+        <div class="kcard">
+          <h4>Geometry-aware feature modulation</h4>
+          <p>Fine-tuning alone fixes the output format but barely improves 3D grounding. Features from a frozen VGGT encoder regress FiLM coefficients and a spatial gate that inject geometry into the VLM's visual tokens. Thanks to the residual form, the fused features start out close to the 2D ones.</p>
+          <code class="eq">F = g ⊙ [(1+Δγ) ⊙ F3d + β] + (1−g) ⊙ F2d
+g = σ(MLP(F3d))</code>
+          <span class="tag">Removing it as well: Avg. DE 0.10 &rarr; <b>0.18 m</b></span>
+        </div>
+        <div class="kcard">
+          <h4>Grid-based canonical layout</h4>
+          <p>Gravity is the dominant axis from an SVD of all bottom-face normals. The scene is rotated into a gravity-aligned frame, centered on the ground plane, and discretized into integer grid indices.</p>
+          <code class="eq">g  = round((v − o) / δ)     δ = 0.1 m
+gθ = round((θ + π) / (2π/Nθ))   Nθ = 24</code>
+          <span class="tag">1 cell = 10 cm · yaw in 15° bins</span>
+        </div>
+      </div>
+
+      <div class="stage-detail" role="tabpanel" id="panel-plan" aria-labelledby="tab-plan" hidden>
+        <div class="kcard">
+          <h4>The layout is a state</h4>
+          <p>Each object is written out as text: id, class, its 2D box (0–1000), grid position, size, and yaw index. The Planner sees this state together with the image.</p>
+          <code class="eq">obj_0 cabinet
+  pos: [gx, gy, gz]   size: [gw, gh, gl]
+  yaw: 0–23</code>
+        </div>
+        <div class="kcard">
+          <h4>Refinement is a policy</h4>
+          <p>The LaP Planner (Qwen3-VL with LoRA) predicts an action sequence. An action executor applies it to produce the next state, which is fed back with the same image.</p>
+          <code class="eq">L(t+1) = execute(L(t), π(I, L(t)))</code>
+        </div>
+        <div class="kcard">
+          <h4>Several short rounds</h4>
+          <p>Fixing every inconsistency at once is a combinatorial problem. Each round resolves a few violations, and refinement stops when the Planner outputs only &lt;STOP&gt; or hits the round limit.</p>
+          <span class="tag">LaP 8B collisions: 3.62 &rarr; 3.23 after 1 round, <b>1.44</b> at convergence</span>
+        </div>
+      </div>
+
+      <div class="stage-detail" role="tabpanel" id="panel-assemble" aria-labelledby="tab-assemble" hidden>
+        <div class="kcard">
+          <h4>Contact graph</h4>
+          <p>Real assets rarely match their boxes exactly. With the LoRA adapter disabled, the same Planner backbone labels every object as resting on the FLOOR, ON another object, or FREE (wall-mounted or hanging).</p>
+          <code class="eq">&lt;CONTACT&gt; id: 2 class: pillow relation: ON 3 &lt;/CONTACT&gt;</code>
+        </div>
+        <div class="kcard">
+          <h4>Relational bundles</h4>
+          <p>A supporter and everything stacked on it move as one rigid composite, so a pillow never drifts away from its bed. FREE objects keep their refined position.</p>
+        </div>
+        <div class="kcard">
+          <h4>Gravity settling</h4>
+          <p>A single-pass rigid-body simulation under a floor constraint removes the floating and penetration artifacts left by asset–box mismatch. The result is a digital twin, or boxes projected back to camera space for 3D grounding.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <br><br>
-                
-    <hr class="divider" />
-    <div class="container" style="max-width: 1000px;">
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>Results</h2>
-            </div>
-            <p>
-                Perceiver results, shown both reprojection and layout in the 3D space.
-            </p>
-            <div class="container" style="max-width: 1000px;">
-                <div class="row">
-                    <div class="col-md-12">
-                    <img src="sources/app_perceiver.png" alt="architecture" style="width: 100%">
-                    </div>
-                </div>
-            </div>
+  <!-- ═════════════ LAYOUT-AS-POLICY ═════════════ -->
+  <section class="section" id="policy">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">§3.2 Layout-as-Policy<span>Figure 3</span></p>
+        <div>
+          <h2 class="sec-title">Five actions, learned from preferences</h2>
+          <p class="sec-lead">A compact action space covers the Perceiver's dominant failure modes: misplaced position, wrong height, wrong scale and wrong orientation. Judging which of two action sequences is better is easier than defining the single best one, so the Planner learns from <strong>preference pairs</strong> instead of a hand-made reward.</p>
         </div>
+      </div>
+
+      <div class="policy-grid">
+        <div class="term">
+          <div class="term-head"><i></i><i></i><i></i><span>action space · integers only</span></div>
+          <ul class="acts">
+            <li><code>SELECT <span class="arg">obj_N</span></code><p>Choose which object the following actions edit.</p></li>
+            <li><code>MOVE <span class="arg">[dx, dy, dz]</span></code><p>Shift along the ground plane (dx, dz) and vertically (dy), in 10 cm grid cells.</p></li>
+            <li><code>ROTATE_Y <span class="arg">[d]</span></code><p>Turn around the vertical axis by d &times; 15&deg;.</p></li>
+            <li><code>RESIZE <span class="arg">[d]</span></code><p>Rescale all three box dimensions uniformly.</p></li>
+            <li><code class="stop">STOP</code><p>End the current sequence. A lone STOP means the layout is done.</p></li>
+          </ul>
+          <div class="term-foot">Rules: select before correcting, fix the largest errors first, prefer fewer actions.</div>
+        </div>
+
+        <div>
+          <ol class="recipe">
+            <li>
+              <h4>Synthesize perturbed layouts</h4>
+              <p>Start from a ground-truth layout, sample an object and apply random, non-repeating perturbations from the action space; continue with probability <i>p</i>. Inverting the perturbations gives the ground-truth corrective sequence.</p>
+            </li>
+            <li>
+              <h4>SFT warm-up</h4>
+              <p>Supervised fine-tuning on these pairs teaches the output format and a basic reading of action, layout and image together, before the Planner ever sees noisy Perceiver outputs.</p>
+            </li>
+            <li>
+              <h4>Direct preference optimization</h4>
+              <p>The ground-truth sequence is the chosen sample. Perceiver-initialized trajectories and degraded copies of the ground truth are rejected samples.</p>
+              <div class="degrade">
+                <div><b>Numerical shift</b>Right direction, wrong magnitude.</div>
+                <div><b>Nuisance actions</b>No-ops, duplicates, edits to correct objects.</div>
+                <div><b>Missing actions</b>Partial fixes or a premature STOP.</div>
+                <div><b>Wrong types</b>MOVE swapped for ROTATE_Y, or flipped signs.</div>
+              </div>
+            </li>
+          </ol>
+
+          <div class="mix">
+            <p class="mix-k">Planner training mix (SFT and DPO)</p>
+            <div class="mix-bar" role="img" aria-label="20 percent ground-truth layouts, 30 percent Perceiver-initialized layouts, 50 percent synthetically perturbed layouts">
+              <span style="width:20%;background:var(--violet-mark)"></span>
+              <span style="width:30%;background:var(--amber-mark)"></span>
+              <span style="width:50%;background:var(--teal-mark)"></span>
+            </div>
+            <ul class="mix-legend">
+              <li><i style="background:var(--violet-mark)"></i><b>20%</b> ground truth, answer is STOP</li>
+              <li><i style="background:var(--amber-mark)"></i><b>30%</b> Perceiver-initialized</li>
+              <li><i style="background:var(--teal-mark)"></i><b>50%</b> synthetic perturbations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="policy-fig">
+        <figure class="plate">
+          <button class="plate-img" type="button" data-zoom="static/img/dpo_data.webp" aria-label="Enlarge Figure 3">
+            <img src="static/img/dpo_data.webp" alt="DPO data synthesis: a ground-truth layout is perturbed with sampled actions; the inverted sequence is the selected sample and degraded versions are rejected samples." width="623" height="773" loading="lazy">
+            <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+          </button>
+        </figure>
+        <div class="prose">
+          <p class="caption" style="margin-top:0"><span class="fig-no">Fig. 3</span>DPO pair synthesis. Perturbing a ground-truth layout and inverting the perturbation yields the <strong>selected</strong> sequence; degrading that sequence yields <strong>rejected</strong> ones. Sequences can touch multiple objects.</p>
+          <p>Perturbations create the same kinds of conflict the Perceiver produces, such as collisions and broken support, so the Planner learns visual alignment and physical plausibility in the same training phase. For DPO pairs built from Perceiver outputs, a candidate is kept as preferred only if it clearly improves layout-quality metrics on the same set of objects; ambiguous pairs are discarded.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <hr class="divider" />
-    <div class="container" style="max-width: 900px; margin: 0 auto;">
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>Planner Refinement Process</h2>
-                <p>We visualize the iterative refinement process of the LaP Planner on real-world scenes. For each example, the video shows the step-by-step action sequence applied to the initial Perceiver layout, and the image shows the final refined 3D scene layout projected back into the image space.</p>
-            </div>
+  <!-- ═════════════ REFINEMENT ═════════════ -->
+  <section class="section" id="refinement">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">§4.2 Qualitative<span>Figure 5</span></p>
+        <div>
+          <h2 class="sec-title">One round, one short program</h2>
+          <p class="sec-lead">Each round the Planner looks at the image and the current layout, then writes a few lines of actions. Circled objects are the ones it chose to fix.</p>
         </div>
-
-        <div class="row" style="margin-bottom: 40px; align-items: center;">
-            <div class="col-md-6">
-                <div class="video-compare-container" style="width: 60%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/example1.mp4" type="video/mp4"></source>
-                    </video>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <img src="videos/example1.png" alt="Example 1 final layout" style="width: 100%">
-            </div>
-        </div>
-
-        <div class="row" style="margin-bottom: 40px; align-items: center;">
-            <div class="col-md-6">
-                <div class="video-compare-container" style="width: 60%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/example2.mp4" type="video/mp4"></source>
-                    </video>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <img src="videos/example2.png" alt="Example 2 final layout" style="width: 100%">
-            </div>
-        </div>
-
-        <div class="row" style="margin-bottom: 40px; align-items: center;">
-            <div class="col-md-6">
-                <div class="video-compare-container" style="width: 60%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/example3.mp4" type="video/mp4"></source>
-                    </video>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <img src="videos/example3.png" alt="Example 3 final layout" style="width: 100%">
-            </div>
-        </div>
+      </div>
+      <figure class="plate">
+        <button class="plate-img" type="button" data-zoom="static/img/action_refine.webp" aria-label="Enlarge Figure 5">
+          <img src="static/img/action_refine.webp" alt="Two scenes: reference image, layouts after each round with the predicted actions, the refined layout, and the recovered 3D scene." width="2044" height="606" loading="lazy">
+          <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <figcaption><span class="fig-no">Fig. 5</span>LaP-guided refinement. Each column shows the structured layout of one round with the action sequence the Planner predicted for it, followed by the refined layout and the recovered scene.</figcaption>
+      </figure>
     </div>
+  </section>
 
-    <hr class="divider" />
-    <div class="container" style="max-width: 1000px;">
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>3D Layout after refinement</h2>
-                <p>Additional qualitative visualizations of 3D scene layouts estimated by our Perceive-then-Plan framework after refinement, demonstrating both 2D reprojection accuracy and 3D spatial coherence.</p>
-            </div>
-            <div class="col-md-12" style="margin-top: 10px;">
-                <img src="sources/more_vis.png" alt="More qualitative results" style="width: 100%">
-            </div>
+  <!-- ═════════════ RESULTS ═════════════ -->
+  <section class="section" id="results">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">§4 Experiments<span>Tables 1–4 · Figure 4</span></p>
+        <div>
+          <h2 class="sec-title">Better grounding, then fewer physical violations</h2>
+          <p class="sec-lead">Trained on Hypersim and SUN RGB-D, evaluated on <strong>1,000 SUN RGB-D test images</strong>. The Perceiver is compared with open and closed VLMs. The Planner is compared before and after refinement, since no prior VLM method refines 3D layouts.</p>
         </div>
+      </div>
+
+      <div class="panel">
+        <div class="tbl-wrap">
+          <table class="t">
+            <caption><b>Table 1</b>3D grounding of the Perceiver on 1,000 SUN RGB-D test images. <span class="best">Bold</span>: best, <span class="second">underlined</span>: second best. † direct 3D grounding, ‡ plain supervised fine-tuning.</caption>
+            <thead><tr><th>Model</th><th>Reproj. IoU ↑</th><th>Prec@0.25 ↑</th><th>Prec@0.5 ↑</th><th>Avg. DE (m) ↓</th></tr></thead>
+            <tbody>
+              <tr class="grp"><td colspan="5">Closed-source</td></tr>
+              <tr><td>Gemini-2.5-Flash †</td><td>0.24</td><td>0.19</td><td>0.07</td><td>0.47</td></tr>
+              <tr><td>GPT-4o †</td><td>0.27</td><td>0.19</td><td>0.08</td><td>0.55</td></tr>
+              <tr class="grp"><td colspan="5">Open-source</td></tr>
+              <tr><td>LLaMA3.2-Vision 11B</td><td>0.14</td><td>0.18</td><td>0.09</td><td>0.54</td></tr>
+              <tr><td>Qwen3-VL 8B</td><td>0.18</td><td>0.31</td><td>0.13</td><td>0.43</td></tr>
+              <tr><td>Qwen3-VL 8B ‡</td><td>0.44</td><td>0.84</td><td>0.46</td><td>0.18</td></tr>
+              <tr><td>Qwen3-VL 8B †</td><td>0.31</td><td>0.54</td><td>0.28</td><td>0.25</td></tr>
+              <tr><td>Qwen3-VL 32B</td><td>0.26</td><td>0.32</td><td>0.18</td><td>0.37</td></tr>
+              <tr><td>Qwen3-VL 32B †</td><td>0.33</td><td>0.57</td><td>0.29</td><td>0.21</td></tr>
+              <tr><td>InternVL3.5 8B</td><td>0.13</td><td>0.24</td><td>0.11</td><td>0.58</td></tr>
+              <tr><td>Gemma3 27B</td><td>0.24</td><td>0.23</td><td>0.14</td><td>0.47</td></tr>
+              <tr><td>Gemma3 27B †</td><td>0.30</td><td>0.22</td><td>0.15</td><td>0.55</td></tr>
+              <tr><td>GLM-4.6V-Flash 9B</td><td>0.21</td><td>0.28</td><td>0.13</td><td>0.36</td></tr>
+              <tr><td>N3D-VLM 7B †</td><td>0.33</td><td>0.53</td><td>0.35</td><td>0.19</td></tr>
+              <tr class="grp"><td colspan="5">Ours</td></tr>
+              <tr class="ours"><td>Perceiver 2B</td><td class="second">0.54</td><td class="best">0.91</td><td class="second">0.62</td><td class="second">0.09</td></tr>
+              <tr class="ours"><td>Perceiver 8B</td><td class="best">0.58</td><td class="second">0.90</td><td class="best">0.64</td><td class="best">0.08</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <figure class="plate" style="margin-top:18px">
+        <button class="plate-img" type="button" data-zoom="static/img/perceiver_compare.webp" aria-label="Enlarge Figure 4">
+          <img src="static/img/perceiver_compare.webp" alt="3D grounding comparison on two scenes: Qwen3-VL 32B, Qwen3-VL 8B with SFT, N3D-VLM 7B and our Perceiver 8B, with per-image metrics." width="2047" height="860" loading="lazy">
+          <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+        </button>
+        <figcaption><span class="fig-no">Fig. 4</span>3D grounding by the Perceiver 8B against strong baselines. Boxes stay tight for objects with non-trivial orientation and partial occlusion.</figcaption>
+      </figure>
+
+      <div class="panel" style="margin-top:18px">
+        <div class="tbl-wrap">
+          <table class="t">
+            <caption><b>Table 2</b>Action-based refinement, all starting from the Perceiver 2B layout. <span class="d up">Green</span> marks a gain and <span class="d dn">red</span> a degradation relative to Perceiver only.</caption>
+            <thead><tr><th>Model</th><th class="l">State</th><th>Reproj. IoU ↑</th><th>SVR (%) ↓</th><th># Collisions ↓</th><th>Rot. Err. ↓</th><th>Avg. DE ↓</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="1">Perceiver only</td><td class="l">Before ref.</td><td>0.54</td><td>11.63</td><td>3.62</td><td>17.74</td><td>0.09</td></tr>
+              <tr><td rowspan="1">One-shot VLM direct ref.</td><td class="l">After ref.</td><td>0.55<span class="d up">+0.01</span></td><td>10.48<span class="d up">−1.15</span></td><td>3.54<span class="d up">−0.08</span></td><td>14.83<span class="d up">−2.91</span></td><td>0.11<span class="d dn">+0.02</span></td></tr>
+              <tr><td rowspan="1">Rule-based ref.</td><td class="l">After ref.</td><td>0.26<span class="d dn">−0.28</span></td><td>0.00<span class="d up">−11.63</span></td><td>0.00<span class="d up">−3.62</span></td><td>17.74<span class="d eq">±0.00</span></td><td>0.24<span class="d dn">+0.15</span></td></tr>
+              <tr><td rowspan="1">GPT-4o</td><td class="l">After ref. (converge)</td><td>0.49<span class="d dn">−0.05</span></td><td>9.96<span class="d up">−1.67</span></td><td>3.89<span class="d dn">+0.27</span></td><td>13.35<span class="d up">−4.39</span></td><td>0.13<span class="d dn">+0.04</span></td></tr>
+              <tr class="ours"><td rowspan="2">LaP Planner (2B)</td><td class="l">After ref. (1 iter)</td><td>0.57<span class="d up">+0.03</span></td><td>8.81<span class="d up">−2.82</span></td><td>3.21<span class="d up">−0.41</span></td><td>15.25<span class="d up">−2.49</span></td><td>0.09<span class="d eq">±0.00</span></td></tr>
+              <tr class="ours"><td class="l">After ref. (converge)</td><td>0.65<span class="d up">+0.11</span></td><td>4.85<span class="d up">−6.78</span></td><td>1.46<span class="d up">−2.16</span></td><td>9.05<span class="d up">−8.69</span></td><td>0.07<span class="d up">−0.02</span></td></tr>
+              <tr class="ours"><td rowspan="2">LaP Planner (8B)</td><td class="l">After ref. (1 iter)</td><td>0.57<span class="d up">+0.03</span></td><td>8.62<span class="d up">−3.01</span></td><td>3.23<span class="d up">−0.39</span></td><td>14.37<span class="d up">−3.37</span></td><td>0.09<span class="d eq">±0.00</span></td></tr>
+              <tr class="ours"><td class="l">After ref. (converge)</td><td>0.67<span class="d up">+0.13</span></td><td>4.12<span class="d up">−7.51</span></td><td>1.44<span class="d up">−2.18</span></td><td>8.62<span class="d up">−9.12</span></td><td>0.07<span class="d up">−0.02</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="ablate">
+        <div class="panel">
+          <div class="tbl-wrap">
+            <table class="t t--compact">
+              <caption><b>Table 3</b>Perceiver ablation. Rows remove components cumulatively.</caption>
+              <thead><tr><th>Configuration</th><th>Reproj. IoU ↑</th><th>Prec@0.25 ↑</th><th>Prec@0.5 ↑</th><th>Avg. DE ↓</th></tr></thead>
+              <tbody>
+                <tr class="ours"><td>Full model (2B)</td><td>0.54</td><td>0.91</td><td>0.62</td><td>0.09</td></tr>
+                <tr><td>− Local-axis</td><td>0.41<span class="d dn">−0.13</span></td><td>0.79<span class="d dn">−0.12</span></td><td>0.48<span class="d dn">−0.14</span></td><td>0.10<span class="d dn">+0.01</span></td></tr>
+                <tr><td>− Geo. modulation</td><td>0.36<span class="d dn">−0.05</span></td><td>0.65<span class="d dn">−0.14</span></td><td>0.46<span class="d dn">−0.02</span></td><td>0.18<span class="d dn">+0.08</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">Dropping geometry modulation on top of the local-axis representation nearly doubles depth error, from 0.10 m to 0.18 m.</p>
+        </div>
+        <div class="panel">
+          <div class="tbl-wrap">
+            <table class="t t--compact">
+              <caption><b>Table 4</b>Planner ablation, LaP Planner 2B at convergence.</caption>
+              <thead><tr><th>Configuration</th><th>IoU ↑</th><th>SVR % ↓</th><th>Coll. ↓</th><th>Rot. ↓</th><th>Actions</th></tr></thead>
+              <tbody>
+                <tr class="ours"><td>Full model (2B)</td><td>0.65</td><td>4.85</td><td>1.46</td><td>9.05</td><td>3.67</td></tr>
+                <tr><td>w/o grid rep.</td><td>0.58<span class="d dn">−0.07</span></td><td>5.29<span class="d dn">+0.42</span></td><td>2.43<span class="d dn">+0.97</span></td><td>15.94<span class="d dn">+6.89</span></td><td>3.53</td></tr>
+                <tr><td>w/o SFT warm-up</td><td>0.56<span class="d dn">−0.09</span></td><td>5.12<span class="d dn">+0.27</span></td><td>2.18<span class="d dn">+0.72</span></td><td>13.43<span class="d dn">+4.38</span></td><td>3.96</td></tr>
+                <tr><td>w/o DPO</td><td>0.60<span class="d dn">−0.05</span></td><td>8.77<span class="d dn">+3.88</span></td><td>3.02<span class="d dn">+1.56</span></td><td>13.98<span class="d dn">+4.93</span></td><td>4.73</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">DPO teaches the Planner to compare competing sequences, producing minimal but sufficient actions per round.</p>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <!-- <hr class="divider" />
-    <div class="container" style="max-width: 1200px;">
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>Additional results and visualizations </h2>
-            </div>
+  <!-- ═════════════ GALLERY ═════════════ -->
+  <section class="section" id="gallery">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">More results<span>Figures 6, 7, 10, 11</span></p>
+        <div>
+          <h2 class="sec-title">Gallery</h2>
+          <p class="sec-lead">Grounding, refinement and assembled scenes across cluttered rooms, varied object scales and heavy occlusion. Click any figure to enlarge.</p>
         </div>
-
-        <div class="container" style="max-width: 1200px;">
-            <div class="row">
-                <div class="col-md-12">
-                    <p>
-                        In this part, we first present more 4D scenes generated by our CoCo4D.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="container" style="max-width: 1200px;">
-            <div class="row captioned_videos">
-            <div class="col-6">
-                <div class="video-compare-container" style="width: 100%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/horse.mp4" type="video/mp4"></source>
-                    </video>
-                    <h4 class="caption">On the table, a toy rocking horse sways back and forth slowly as it inches forward, flashes of lightning in the background.</h4>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="video-compare-container" style="width: 100%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/astro.mp4" type="video/mp4"></source>
-                    </video>
-                    <h4 class="caption">The astronaut slowly standing up on a rocky planet, with a bright planet and stars twinkling behind him.</h4>
-                </div>
-            </div>
-        </div>
-
-        </div>
-        <div class="container" style="max-width: 1200px;">
-            <div class="row captioned_videos">
-            <div class="col-6">
-                <div class="video-compare-container" style="width: 100%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/crab_cropped.mp4" type="video/mp4"></source>
-                    </video>
-                    <h4 class="caption">A hermit crab moves slowly and steadily from left to right across a glistening beach.</h4>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="video-compare-container" style="width: 100%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/hamster.mp4" type="video/mp4"></source>
-                    </video>
-                    <h4 class="caption">An adorable hamster lounges leisurely on a floatie, sporting stylish sunglasses, drifting across the sparkling sea as gentle waves ripple around it. The hamster stretches contentedly.</h4>
-                </div>
-            </div>
-            </div>
-        </div>
-
-        <br><br>
-
-        <div class="container" style="max-width: 1200px;">
-            <div class="row">
-                <div class="col-md-12">
-                    <p>
-                        Moreover, we present some dynamic background scenes only to demonstrate the ability of our CoCo4D in generating comprehensive and complex 4D scenes.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        </div>
-        <div class="container" style="max-width: 1200px;">
-            <div class="row captioned_videos">
-            <div class="col-6">
-                <div class="video-compare-container" style="width: 100%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/bg_anime.mp4" type="video/mp4"></source>
-                    </video>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="video-compare-container" style="width: 100%">
-                    <video class="video lazy" loop playsinline autoplay muted style="width: 100%">
-                        <source data-src="videos/bg_firework.mp4" type="video/mp4"></source>
-                    </video>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div> -->
-
-    <hr class="divider" />
-    <div class="container" style="max-width: 900px; margin: 0 auto;">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>Language-guided editing</h2>
-                <p>We show an example of language-guided editing with our planner.</p>
-                <img src="sources/languageedit.png" alt="language-guided editing" style="width: 100%">
-            </div>
-            <div class="col-md-6">
-                <h2>Instructional Refinement</h2>
-                <p>We also show that our planner can support instructional refinement for interactive agentic systems.</p>
-                <img src="sources/instructional_refinement.png" alt="instructional refinement" style="width: 100%">
-            </div>
-        </div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Gallery">
+        <button role="tab" id="gt-1" aria-controls="gp-1" aria-selected="true">Perceiver grounding</button>
+        <button role="tab" id="gt-2" aria-controls="gp-2" aria-selected="false" tabindex="-1">Planner rounds</button>
+        <button role="tab" id="gt-3" aria-controls="gp-3" aria-selected="false" tabindex="-1">Refined layouts</button>
+        <button role="tab" id="gt-4" aria-controls="gp-4" aria-selected="false" tabindex="-1">Scene assembly</button>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="gp-1" aria-labelledby="gt-1">
+        <figure class="plate">
+          <button class="plate-img" type="button" data-zoom="static/img/perceiver_gallery.webp" aria-label="Enlarge Figure 10">
+            <img src="static/img/perceiver_gallery.webp" alt="Grid of indoor photos with 3D boxes predicted by the Perceiver, plus two canonical layouts of chairs and tables." width="1800" height="1315" loading="lazy">
+            <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+          </button>
+          <figcaption><span class="fig-no">Fig. 10</span>Perceiver results on real-world captures, shown as reprojection and as layout in 3D space.</figcaption>
+        </figure>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="gp-2" aria-labelledby="gt-2" hidden>
+        <figure class="plate">
+          <button class="plate-img" type="button" data-zoom="static/img/planner_gallery.webp" aria-label="Enlarge Figure 11">
+            <img src="static/img/planner_gallery.webp" alt="Four scenes: observation, initial 3D layout, layout after one refinement round, and the fully refined layout; problem areas are circled." width="1800" height="1284" loading="lazy">
+            <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+          </button>
+          <figcaption><span class="fig-no">Fig. 11</span>Initial layout, one round of refinement, and full refinement. Interpenetrations and floating objects are resolved over successive rounds.</figcaption>
+        </figure>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="gp-3" aria-labelledby="gt-3" hidden>
+        <figure class="plate">
+          <button class="plate-img" type="button" data-zoom="static/img/more_vis.webp" aria-label="Enlarge Figure 6">
+            <img src="static/img/more_vis.webp" alt="Final 3D layouts next to their reprojections onto the input images." width="2047" height="742" loading="lazy">
+            <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+          </button>
+          <figcaption><span class="fig-no">Fig. 6</span>Final 3D layouts after refinement. The structured layout is converted back to camera space and projected onto the image.</figcaption>
+        </figure>
+      </div>
+      <div class="tabpanel" role="tabpanel" id="gp-4" aria-labelledby="gt-4" hidden>
+        <figure class="plate">
+          <button class="plate-img" type="button" data-zoom="static/img/scene_assembly.webp" aria-label="Enlarge Figure 7">
+            <img src="static/img/scene_assembly.webp" alt="Observation, estimated 3D layout, our assembled scene, and the SAM 3D reconstruction with the same assets." width="2044" height="699" loading="lazy">
+            <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+          </button>
+          <figcaption><span class="fig-no">Fig. 7</span>Scenes assembled from our estimated layout, compared with the layout recovered by SAM 3D using the same 3D assets.</figcaption>
+        </figure>
+      </div>
     </div>
+  </section>
 
-
-    <hr class="divider" />
-    <div class="container" style="max-width: 1000px;">
-        <div class="row">
-            <div class="col-sm-12">
-                <h2>BibTeX</h2>
-                <pre><code>
-                    @misc{zhou2026perceivethenplan,
-                        title={Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation}, 
-                        author={Junwei Zhou and Yu-Wing Tai},
-                        year={2026},
-                        eprint={2605.25326},
-                        archivePrefix={arXiv},
-                        primaryClass={cs.CV},
-                        url={https://arxiv.org/abs/2605.25326}, 
-                  }
-                  </code></pre>
-            </div>
+  <!-- ═════════════ APPLICATIONS ═════════════ -->
+  <section class="section" id="applications">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">§4.4 Applications<span>Figures 8, 9</span></p>
+        <div>
+          <h2 class="sec-title">The action space is also an editing interface</h2>
+          <p class="sec-lead">Because the Planner speaks in actions, a user instruction becomes an action sequence over the same vocabulary. No new architecture is needed.</p>
         </div>
-    </div> 
-
-    <div class="container" style="max-width: 1000px;">
-        <footer>
-            <p> Website template from <a href="https://dreamfusion3d.github.io/">DreamFusion</a>. We thank the authors for the open-source code.</p>
-        </footer>
+      </div>
+      <div class="apps">
+        <article class="app">
+          <h3>Language-guided editing</h3>
+          <p>Instructions are translated into actions that change the layout while keeping it plausible. The edited layout and the recovered scene are shown together.</p>
+          <div class="chat">
+            <p class="bubble"><span class="who">Instruction</span>“Put bottle_0 right above stove_0”</p>
+            <p class="bubble"><span class="who">Instruction</span>“Put the stove on counter_1”</p>
+          </div>
+          <figure class="plate">
+            <button class="plate-img" type="button" data-zoom="static/img/language_edit.webp" aria-label="Enlarge Figure 8">
+              <img src="static/img/language_edit.webp" alt="Kitchen: input image, refined 3D layout, and two edited layouts with recovered scenes for the two instructions." width="824" height="848" loading="lazy">
+              <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+            </button>
+            <figcaption><span class="fig-no">Fig. 8</span>Scene editing with instructions.</figcaption>
+          </figure>
+        </article>
+        <article class="app">
+          <h3>Instructional refinement</h3>
+          <p>A user can point out what looks wrong, and the Planner answers with the corrective actions. This makes it a natural component for interactive agentic systems.</p>
+          <div class="chat">
+            <p class="bubble"><span class="who">User</span>“The sofa_0 and the table_0 are too close to each other, should be more separated”</p>
+            <p class="bubble bubble--plan"><span class="who">LaP Planner</span>&lt;SELECT&gt; sofa_0,
+&lt;MOVE&gt; (0, 0, 4),
+&lt;STOP&gt;</p>
+          </div>
+          <figure class="plate">
+            <button class="plate-img" type="button" data-zoom="static/img/instructional_refinement.webp" aria-label="Enlarge Figure 9">
+              <img src="static/img/instructional_refinement.webp" alt="Classroom: the sofa and table overlap before the instruction and are separated after the predicted MOVE." width="631" height="492" loading="lazy">
+              <span class="zoom" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.5-4.5M11 8v6M8 11h6"/></svg></span>
+            </button>
+            <figcaption><span class="fig-no">Fig. 9</span>Instructional refinement from user language.</figcaption>
+          </figure>
+        </article>
+      </div>
     </div>
-    <script src="https://polyfill.io/v3/polyfill.js?features=IntersectionObserver"></script>
-    <script src="assets/js/yall.js"></script>
-    <script>
-        yall(
-            {
-                observeChanges: true
-            }
-        );
-    </script>
-    <script src="assets/js/scripts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://uploads-ssl.webflow.com/51e0d73d83d06baa7a00000f/js/webflow.fd002feec.js"></script>
-    <!-- Import the component -->
+  </section>
+
+  <!-- ═════════════ BIBTEX ═════════════ -->
+  <section class="section" id="bibtex">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">Citation</p>
+        <div><h2 class="sec-title">BibTeX</h2></div>
+      </div>
+      <div class="bib">
+        <button type="button" class="btn btn--sm copy" id="copy-bib">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+          <span>Copy</span>
+        </button>
+<pre id="bib-text"><span class="k">@misc</span>{zhou2026perceivethenplan,
+  <span class="f">title</span>={Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation},
+  <span class="f">author</span>={Junwei Zhou and Yu-Wing Tai},
+  <span class="f">year</span>={2026},
+  <span class="f">eprint</span>={2605.25326},
+  <span class="f">archivePrefix</span>={arXiv},
+  <span class="f">primaryClass</span>={cs.CV},
+  <span class="f">url</span>={https://arxiv.org/abs/2605.25326},
+}</pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <span>Junwei Zhou &amp; Yu-Wing Tai · Dartmouth College · 2026</span>
+    <span><a href="https://arxiv.org/abs/2605.25326">arXiv</a> · <a href="https://github.com/Colezwhy/Perceive-then-Plan">GitHub</a> · <a href="#top">Back to top</a></span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Enlarged figure">
+  <button type="button" class="iconbtn close" id="lb-close" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <div class="lightbox-inner"><img id="lb-img" alt=""></div>
+</div>
+
+<script src="static/js/main.js" defer></script>
 </body>
-
 </html>

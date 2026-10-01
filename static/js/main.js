@@ -124,12 +124,14 @@
 
   /* ───────── 360° turntables: play while visible, click to pause ───────── */
   const SPIN_RATE = 0.5; // the renders do a full turn in 3 s; half speed keeps labels readable
-  $$('.spin-frame').forEach(btn => {
-    const v = $('video', btn);
+  $$('.spin-frame').forEach(frame => {
+    const v = $('video', frame);
+    const btn = $('.spin-toggle', frame);
     const name = btn.getAttribute('aria-label').replace(/^Pause /, '');
     let paused = reduceMotion, visible = false;
     const sync = () => {
       const playing = !v.paused;
+      frame.classList.toggle('is-paused', !playing);
       btn.setAttribute('aria-pressed', String(playing));
       btn.setAttribute('aria-label', (playing ? 'Pause ' : 'Play ') + name);
     };
@@ -143,7 +145,7 @@
     v.addEventListener('play', sync);
     v.addEventListener('pause', sync);
     btn.addEventListener('click', () => { paused = !v.paused; if (paused) v.pause(); else { visible = true; go(); } });
-    new IntersectionObserver(([e]) => { visible = e.isIntersecting; go(); }, { threshold: 0.3 }).observe(btn);
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; go(); }, { threshold: 0.3 }).observe(frame);
     sync();
   });
 

@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-  <link rel="stylesheet" href="static/css/style.css">
+  <link rel="stylesheet" href="static/css/style.css?v=22c13347">
 </head>
 
 <body>
@@ -48,7 +48,7 @@
     <nav class="nav" aria-label="Sections">
       <a href="#overview">Overview</a>
       <a href="#method">Method</a>
-      <a href="#policy">Layout-as-Policy</a>
+      <a href="#policy">Policy</a>
       <a href="#refinement">Refinement</a>
       <a href="#turntable">360°</a>
       <a href="#results">Results</a>
@@ -402,35 +402,39 @@ gθ = round((θ + π) / (2π/Nθ))   Nθ = 24</code>
       </div>
       <div class="spins">
         <figure class="spin">
-          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the hotel room layout" aria-pressed="true">
+          <div class="spin-frame">
             <video muted loop playsinline preload="metadata" poster="static/video/turntable1_poster.jpg" src="static/video/turntable1.mp4"></video>
             <span class="vp-tag vp-tag--tl"><i></i>360°</span>
-            <span class="vp-inset"><img src="static/img/turntable1_input.webp" alt="Input photo of a hotel room with a desk, lamp, armchair and a television on a dresser" width="730" height="530" loading="lazy"></span>
-          </button>
+            <div class="vp-inset"><img src="static/img/turntable1_input.webp" alt="Input photo of a hotel room with a desk, lamp, armchair and a television on a dresser" width="730" height="530" loading="lazy"></div>
+          <button class="spin-toggle" type="button" aria-label="Pause 360-degree view of the hotel room layout" aria-pressed="true"></button>
+          </div>
           <figcaption><b>Hotel room</b>lamp, chairs, tables, television, door</figcaption>
         </figure>
         <figure class="spin">
-          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the office layout" aria-pressed="true">
+          <div class="spin-frame">
             <video muted loop playsinline preload="metadata" poster="static/video/turntable2_poster.jpg" src="static/video/turntable2.mp4"></video>
             <span class="vp-tag vp-tag--tl"><i></i>360°</span>
-            <span class="vp-inset"><img src="static/img/turntable2_input.webp" alt="Input photo of an office corner with a wooden desk, a CRT monitor, a lamp, a chair and a bookcase" width="730" height="530" loading="lazy"></span>
-          </button>
+            <div class="vp-inset"><img src="static/img/turntable2_input.webp" alt="Input photo of an office corner with a wooden desk, a CRT monitor, a lamp, a chair and a bookcase" width="730" height="530" loading="lazy"></div>
+          <button class="spin-toggle" type="button" aria-label="Pause 360-degree view of the office layout" aria-pressed="true"></button>
+          </div>
           <figcaption><b>Office</b>desks, monitor, lamp, chair, bookcase</figcaption>
         </figure>
         <figure class="spin">
-          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the bedroom layout" aria-pressed="true">
+          <div class="spin-frame">
             <video muted loop playsinline preload="metadata" poster="static/video/turntable3_poster.jpg" src="static/video/turntable3.mp4"></video>
             <span class="vp-tag vp-tag--tl"><i></i>360°</span>
-            <span class="vp-inset"><img src="static/img/turntable3_input.webp" alt="Input photo of a furniture-store bedroom with a bed, dressers, lamps and a small table with chairs" width="730" height="530" loading="lazy"></span>
-          </button>
+            <div class="vp-inset"><img src="static/img/turntable3_input.webp" alt="Input photo of a furniture-store bedroom with a bed, dressers, lamps and a small table with chairs" width="730" height="530" loading="lazy"></div>
+          <button class="spin-toggle" type="button" aria-label="Pause 360-degree view of the bedroom layout" aria-pressed="true"></button>
+          </div>
           <figcaption><b>Bedroom</b>bed, pillows, cabinets, lamps, mirror, chairs</figcaption>
         </figure>
         <figure class="spin">
-          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the classroom layout" aria-pressed="true">
+          <div class="spin-frame">
             <video muted loop playsinline preload="metadata" poster="static/video/turntable4_poster.jpg" src="static/video/turntable4.mp4"></video>
             <span class="vp-tag vp-tag--tl"><i></i>360°</span>
-            <span class="vp-inset"><img src="static/img/turntable4_input.webp" alt="Input photo of a classroom with long tables, a blue sofa, a wall-mounted television and a board" width="730" height="530" loading="lazy"></span>
-          </button>
+            <div class="vp-inset"><img src="static/img/turntable4_input.webp" alt="Input photo of a classroom with long tables, a blue sofa, a wall-mounted television and a board" width="730" height="530" loading="lazy"></div>
+          <button class="spin-toggle" type="button" aria-label="Pause 360-degree view of the classroom layout" aria-pressed="true"></button>
+          </div>
           <figcaption><b>Classroom</b>sofas, tables, television, board, counter</figcaption>
         </figure>
       </div>
@@ -680,6 +684,6 @@ gθ = round((θ + π) / (2π/Nθ))   Nθ = 24</code>
   <div class="lightbox-inner"><img id="lb-img" alt=""></div>
 </div>
 
-<script src="static/js/main.js" defer></script>
+<script src="static/js/main.js?v=21f2b68b" defer></script>
 </body>
 </html>

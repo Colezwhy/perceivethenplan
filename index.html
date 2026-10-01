@@ -50,6 +50,7 @@
       <a href="#method">Method</a>
       <a href="#policy">Layout-as-Policy</a>
       <a href="#refinement">Refinement</a>
+      <a href="#turntable">360°</a>
       <a href="#results">Results</a>
       <a href="#gallery">Gallery</a>
       <a href="#applications">Applications</a>
@@ -386,6 +387,53 @@ gθ = round((θ + π) / (2π/Nθ))   Nθ = 24</code>
         </button>
         <figcaption><span class="fig-no">Fig. 5</span>LaP-guided refinement. Each column shows the structured layout of one round with the action sequence the Planner predicted for it, followed by the refined layout and the recovered scene.</figcaption>
       </figure>
+    </div>
+  </section>
+
+  <!-- ═════════════ 360° VIEWS ═════════════ -->
+  <section class="section" id="turntable">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="sec-ref">Supplementary<span>360° renders</span></p>
+        <div>
+          <h2 class="sec-title">Every layout, from every side</h2>
+          <p class="sec-lead">Turntable renders of refined 3D layouts, each estimated from the single photo in the inset. Seen from behind and from the side, objects keep their support and spacing. Click a view to pause it.</p>
+        </div>
+      </div>
+      <div class="spins">
+        <figure class="spin">
+          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the hotel room layout" aria-pressed="true">
+            <video muted loop playsinline preload="metadata" poster="static/video/turntable1_poster.jpg" src="static/video/turntable1.mp4"></video>
+            <span class="vp-tag vp-tag--tl"><i></i>360°</span>
+            <span class="vp-inset"><img src="static/img/turntable1_input.webp" alt="Input photo of a hotel room with a desk, lamp, armchair and a television on a dresser" width="730" height="530" loading="lazy"></span>
+          </button>
+          <figcaption><b>Hotel room</b>lamp, chairs, tables, television, door</figcaption>
+        </figure>
+        <figure class="spin">
+          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the office layout" aria-pressed="true">
+            <video muted loop playsinline preload="metadata" poster="static/video/turntable2_poster.jpg" src="static/video/turntable2.mp4"></video>
+            <span class="vp-tag vp-tag--tl"><i></i>360°</span>
+            <span class="vp-inset"><img src="static/img/turntable2_input.webp" alt="Input photo of an office corner with a wooden desk, a CRT monitor, a lamp, a chair and a bookcase" width="730" height="530" loading="lazy"></span>
+          </button>
+          <figcaption><b>Office</b>desks, monitor, lamp, chair, bookcase</figcaption>
+        </figure>
+        <figure class="spin">
+          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the bedroom layout" aria-pressed="true">
+            <video muted loop playsinline preload="metadata" poster="static/video/turntable3_poster.jpg" src="static/video/turntable3.mp4"></video>
+            <span class="vp-tag vp-tag--tl"><i></i>360°</span>
+            <span class="vp-inset"><img src="static/img/turntable3_input.webp" alt="Input photo of a furniture-store bedroom with a bed, dressers, lamps and a small table with chairs" width="730" height="530" loading="lazy"></span>
+          </button>
+          <figcaption><b>Bedroom</b>bed, pillows, cabinets, lamps, mirror, chairs</figcaption>
+        </figure>
+        <figure class="spin">
+          <button class="spin-frame" type="button" aria-label="Pause 360-degree view of the classroom layout" aria-pressed="true">
+            <video muted loop playsinline preload="metadata" poster="static/video/turntable4_poster.jpg" src="static/video/turntable4.mp4"></video>
+            <span class="vp-tag vp-tag--tl"><i></i>360°</span>
+            <span class="vp-inset"><img src="static/img/turntable4_input.webp" alt="Input photo of a classroom with long tables, a blue sofa, a wall-mounted television and a board" width="730" height="530" loading="lazy"></span>
+          </button>
+          <figcaption><b>Classroom</b>sofas, tables, television, board, counter</figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 

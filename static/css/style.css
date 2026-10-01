@@ -315,6 +315,23 @@ figcaption .fig-no, .caption .fig-no { font: 600 11.5px/1 var(--f-mono); letter-
 .policy-fig { margin-top: clamp(24px, 3vw, 36px); display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: center; }
 @media (max-width: 760px) { .policy-fig { grid-template-columns: minmax(0, 1fr); } .policy-fig .plate { max-width: 360px; } }
 
+/* ───────────── 360° turntables ───────────── */
+.spins { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 1100px) { .spins { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.spin { margin: 0; min-width: 0; }
+.spin-frame {
+  position: relative; display: block; width: 100%; aspect-ratio: 1 / 1; max-width: 100%; padding: 0;
+  border-radius: 14px; overflow: hidden; background: var(--paper); border: 1px solid var(--line-strong); cursor: pointer;
+  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.9);
+}
+.spin-frame video { width: 100%; height: 100%; object-fit: contain; }
+.spin-frame .vp-tag { left: 10px; top: 10px; }
+.spin-frame .vp-inset { left: 8px; bottom: 8px; width: 40%; border-width: 2px; border-radius: 8px; }
+.spin-frame[aria-pressed="false"] .vp-tag i { background: var(--ink-3); box-shadow: none; }
+.spin figcaption { margin-top: 10px; font: 12.5px/1.45 var(--f-mono); color: var(--ink-3); }
+.spin figcaption b { display: block; font: 600 14.5px/1.3 var(--f-body); color: var(--ink); margin-bottom: 2px; }
+@media (max-width: 560px) { .spins { gap: 12px; } .spin-frame .vp-inset { width: 46%; } .spin-frame .vp-tag { font-size: 9.5px; padding: 4px 6px; } }
+
 /* ───────────── results tables ───────────── */
 .panel { padding: clamp(16px, 2.4vw, 26px); border-radius: 16px; background: var(--bg-raised); border: 1px solid var(--line); min-width: 0; }
 

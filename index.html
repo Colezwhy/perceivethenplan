@@ -13,18 +13,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation</title>
-  <meta name="description" content="Perceive-then-Plan: a geometry-enhanced Perceiver VLM grounds objects in 3D from a single image, then the LaP Planner VLM refines the layout through discrete actions (select, move, rotate, resize) learned with SFT and DPO.">
+  <meta name="description" content="Perceive-then-Plan (NeurIPS 2026): a geometry-enhanced Perceiver VLM grounds objects in 3D from a single image, then the LaP Planner VLM refines the layout through discrete actions (select, move, rotate, resize) learned with SFT and DPO.">
   <meta name="theme-color" content="#0b1220">
   <link rel="canonical" href="https://colezwhy.github.io/perceivethenplan/">
 
   <meta property="og:site_name" content="Perceive-then-Plan">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation">
-  <meta property="og:description" content="A Perceiver VLM grounds the scene in 3D; the LaP Planner refines it with discrete actions until the layout is physically plausible and still matches the image.">
+  <meta property="og:description" content="NeurIPS 2026. A Perceiver VLM grounds the scene in 3D; the LaP Planner refines it with discrete actions until the layout is physically plausible and still matches the image.">
   <meta property="og:url" content="https://colezwhy.github.io/perceivethenplan/">
   <meta property="og:image" content="https://colezwhy.github.io/perceivethenplan/static/img/og.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Perceive-then-Plan: Layout-as-Policy">
+  <meta name="twitter:title" content="Perceive-then-Plan: Layout-as-Policy (NeurIPS 2026)">
   <meta name="twitter:image" content="https://colezwhy.github.io/perceivethenplan/static/img/og.jpg">
 
   <link rel="icon" type="image/png" href="static/img/favicon.png">
@@ -33,7 +33,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
-  <link rel="stylesheet" href="static/css/style.css?v=22c13347">
+  <link rel="stylesheet" href="static/css/style.css?v=9a0e0e1c">
 </head>
 
 <body>
@@ -76,7 +76,7 @@
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
-        <p class="eyebrow"><b>arXiv 2605.25326</b><span>cs.CV</span><span>May 2026</span></p>
+        <p class="eyebrow"><span class="venue"><i aria-hidden="true"></i>NeurIPS 2026</span><b>arXiv 2605.25326</b><span>cs.CV</span></p>
         <h1 class="title">
           <span class="t-line t-perceive">Perceive</span>
           <span class="t-line"><span class="t-then">&#8209;then&#8209;</span><span class="t-plan">Plan</span></span>
@@ -656,14 +656,11 @@ gθ = round((θ + π) / (2π/Nθ))   Nθ = 24</code>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
           <span>Copy</span>
         </button>
-<pre id="bib-text"><span class="k">@misc</span>{zhou2026perceivethenplan,
+<pre id="bib-text"><span class="k">@inproceedings</span>{zhou2026perceivethenplan,
   <span class="f">title</span>={Perceive-then-Plan: Layout-as-Policy for Monocular 3D Scene Layout Estimation},
-  <span class="f">author</span>={Junwei Zhou and Yu-Wing Tai},
-  <span class="f">year</span>={2026},
-  <span class="f">eprint</span>={2605.25326},
-  <span class="f">archivePrefix</span>={arXiv},
-  <span class="f">primaryClass</span>={cs.CV},
-  <span class="f">url</span>={https://arxiv.org/abs/2605.25326},
+  <span class="f">author</span>={Zhou, Junwei and Tai, Yu-Wing},
+  <span class="f">booktitle</span>={Advances in Neural Information Processing Systems},
+  <span class="f">year</span>={2026}
 }</pre>
       </div>
     </div>
@@ -672,7 +669,7 @@ gθ = round((θ + π) / (2π/Nθ))   Nθ = 24</code>
 
 <footer class="footer">
   <div class="wrap footer-inner">
-    <span>Junwei Zhou &amp; Yu-Wing Tai · Dartmouth College · 2026</span>
+    <span>Junwei Zhou &amp; Yu-Wing Tai · Dartmouth College · NeurIPS 2026</span>
     <span><a href="https://arxiv.org/abs/2605.25326">arXiv</a> · <a href="https://github.com/Colezwhy/Perceive-then-Plan">GitHub</a> · <a href="#top">Back to top</a></span>
   </div>
 </footer>

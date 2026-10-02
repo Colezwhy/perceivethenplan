@@ -121,6 +121,9 @@ code, kbd, pre { font-family: var(--f-mono); }
 
 .eyebrow { font: 500 12px/1.4 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 18px; display: flex; flex-wrap: wrap; gap: 6px 14px; }
 .eyebrow b { color: var(--ink-2); font-weight: 500; }
+.eyebrow { align-items: center; }
+.venue { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px 6px 9px; border-radius: 999px; background: var(--teal); color: #06231f; font-weight: 600; letter-spacing: 0.06em; box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.14); }
+.venue i { width: 7px; height: 7px; border-radius: 50%; background: #06231f; }
 
 .title { margin: 0; font-family: var(--f-display); font-weight: 800; font-stretch: 118%; font-size: var(--fs-5); line-height: 0.92; letter-spacing: -0.02em; text-wrap: balance; }
 .title .t-perceive { color: var(--violet); }

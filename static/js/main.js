@@ -122,6 +122,31 @@
   syncPlayUI();
   tryPlay();
 
+  /* ───────── explainer video: play button + chapter seeking ───────── */
+  const intro = $('#intro-video');
+  const introPlay = $('#intro-play');
+  const chapters = $$('#intro-chapters button');
+  const chapterStarts = chapters.map(b => Number(b.dataset.t));
+  const playIntro = () => {
+    const p = intro.play();
+    if (p && p.catch) p.catch(() => {});
+  };
+  const markChapter = () => {
+    let k = 0;
+    chapterStarts.forEach((s, i) => { if (intro.currentTime >= s) k = i; });
+    chapters.forEach((b, i) => b.setAttribute('aria-current', String(i === k)));
+  };
+  introPlay.addEventListener('click', playIntro);
+  intro.addEventListener('play', () => { introPlay.hidden = true; });
+  intro.addEventListener('ended', () => { introPlay.hidden = false; });
+  intro.addEventListener('timeupdate', markChapter);
+  intro.addEventListener('seeked', markChapter);
+  chapters.forEach((b, i) => b.addEventListener('click', () => {
+    intro.currentTime = chapterStarts[i];
+    playIntro();
+  }));
+  markChapter();
+
   /* ───────── 360° turntables: play while visible, click to pause ───────── */
   const SPIN_RATE = 0.5; // the renders do a full turn in 3 s; half speed keeps labels readable
   $$('.spin-frame').forEach(frame => {
